@@ -14,7 +14,7 @@ load_dotenv()
 TOGETHER_AI_API = os.getenv("TOGETHER_AI")
 
 # Streamlit Page Config
-st.set_page_config(page_title="LawGPT")
+st.set_page_config(page_title="Law4her")
 col1, col2, col3 = st.columns([1, 4, 1])
 with col2:
     st.image(
@@ -24,29 +24,16 @@ with col2:
 st.markdown(
     """
     <style>
-    div.stButton > button:first-child {
+   div.stButton > button:first-child {
     background-color: #ffffff; /* White background */
     color: #000000; /* Black text */
-    border: 2px solid #000000; /* Black border */
-    border-radius: 5px; /* Rounded corners */
-    padding: 8px 16px; /* Padding inside the button */
-    font-size: 16px; /* Font size */
-    font-weight: bold; /* Bold text */
-    cursor: pointer; /* Pointer cursor */
-}
-
-div.stButton > button:hover {
-    background-color: #f0f0f0; /* Slightly darker white for hover effect */
-    color: #000000; /* Keep text black */
-    border-color: #000000; /* Keep border black */
+    border: 1px solid #000000; /* Optional: Add a black border */
 }
 
 div.stButton > button:active {
-    background-color: #e0e0e0; /* Even darker white when active */
-    color: #000000; /* Keep text black */
-    border-color: #000000; /* Keep border black */
+    background-color: #e0e0e0; /* Slightly darker white for active state */
+    color: #000000; /* Black text remains the same */
 }
-
 
     div[data-testid="stStatusWidget"] div button {
         display: none;
@@ -67,12 +54,12 @@ div.stButton > button:active {
 
 # Reset Conversation
 def reset_conversation():
-    st.session_state.messages = [{"role": "assistant", "content": "Hi, how can I help you? "}]
+    st.session_state.messages = [{"role": "assistant", "content": "Hi, how can I help you?"}]
     st.session_state.memory.clear()
 
 # Initialize chat messages and memory
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Hi, how can I help you? "}]
+    st.session_state.messages = [{"role": "assistant", "content": "Hi, how can I help you?"}]
 
 if "memory" not in st.session_state:
     st.session_state.memory = ConversationBufferWindowMemory(
@@ -87,20 +74,15 @@ embeddings = HuggingFaceEmbeddings(
 
 # Enable dangerous deserialization (safe only if the file is trusted and created by you)
 db = FAISS.load_local("ipc_vector_db", embeddings, allow_dangerous_deserialization=True)
-db_retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 4})
+db_retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 2, "max_length": 512})
 
-# Define the prompt template
-prompt_template = """<s>[INST]This is a chat template and As a legal chatbot specializing in Indian Penal Code queries, your primary objective is to provide accurate and concise information based on the user's questions. Do not generate your own questions and answers. You will adhere strictly to the instructions provided, offering relevant context from the knowledge base while avoiding unnecessary details. Your responses will be brief, to the point, and in compliance with the established format. If a question falls outside the given context, you will refrain from utilizing the chat history and instead rely on your own knowledge base to generate an appropriate response. You will prioritize the user's query and refrain from posing additional questions. The aim is to deliver professional, precise, and contextually relevant information pertaining to the Indian Penal Code.
+prompt_template = """<s>[INST]As a legal chatbot specializing in the Indian Penal Code, provide a concise and accurate answer based on the given context. Avoid unnecessary details or unrelated content. Only respond if the answer can be derived from the provided context; otherwise, say "The information is not available in the provided context." 
 CONTEXT: {context}
 CHAT HISTORY: {chat_history}
 QUESTION: {question}
 ANSWER:
 </s>[INST]
 """
-
-
-
-
 
 prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question", "chat_history"])
 
