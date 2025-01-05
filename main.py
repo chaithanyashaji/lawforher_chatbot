@@ -1,3 +1,5 @@
+
+import logging
 from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain_huggingface import HuggingFaceEmbeddings
 from sentence_transformers import SentenceTransformer
@@ -13,10 +15,14 @@ import os
 
 from dotenv import load_dotenv
 import warnings
+logging.basicConfig(level=logging.DEBUG)  # Logs at DEBUG level and above
+logger = logging.getLogger(__name__)
 
+logger.debug("Starting Streamlit app...")
 # Suppress PyTorch FutureWarning
-warnings.filterwarnings("ignore", category=FutureWarning, module="torch")
+warnings.filterwarnings("ignore", message="You are using `torch.load` with `weights_only=False`")
 warnings.filterwarnings("ignore", message="Tried to instantiate class '__path__._path'")
+warnings.filterwarnings("ignore", category=FutureWarning)
 # Suppress generic DeprecationWarnings (including LangChain)
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
