@@ -1,16 +1,26 @@
 from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain_huggingface import HuggingFaceEmbeddings
-
+from sentence_transformers import SentenceTransformer
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
 from langchain_together import Together
-from langchain.memory import ConversationBufferWindowMemory
+from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 import streamlit as st
 import os
+
 from dotenv import load_dotenv
+import warnings
+
+# Suppress PyTorch FutureWarning
+warnings.filterwarnings("ignore", category=FutureWarning, module="torch")
+warnings.filterwarnings("ignore", message="Tried to instantiate class '__path__._path'")
+# Suppress generic DeprecationWarnings (including LangChain)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+
 
 load_dotenv()
 TOGETHER_AI_API = os.getenv("TOGETHER_AI")
@@ -64,8 +74,9 @@ if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "Hi, how can I help you?"}]
 
 if "memory" not in st.session_state:
-    st.session_state.memory = ConversationBufferWindowMemory(
-        k=2, memory_key="chat_history", return_messages=True
+    st.session_state.memory = ConversationBufferMemory(
+        memory_key="chat_history",
+        return_messages=True
     )
 
 # Load embeddings and vectorstore
