@@ -6,3 +6,4 @@ python-dotenv==1.0.1
 streamlit==1.41.1
 transformers==4.47.1
 uvicorn==0.34.0
+sentence-transformers==3.3.1
