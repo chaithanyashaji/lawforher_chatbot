@@ -7,3 +7,5 @@ faiss-cpu
 huggingface-hub
 nomic
 python-dotenv
+transformers
+torch
