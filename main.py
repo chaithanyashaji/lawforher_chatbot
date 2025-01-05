@@ -25,23 +25,29 @@ st.markdown(
     """
     <style>
     div.stButton > button:first-child {
-        background-color: white; /* White background */
-        color: black; /* Black text */
-        border: 2px solid black; /* Black border */
-        border-radius: 5px; /* Rounded corners */
-        padding: 8px 16px; /* Padding inside the button */
-        font-size: 16px; /* Font size */
-        font-weight: bold; /* Bold text */
-        cursor: pointer; /* Pointer cursor */
-    }
-    div.stButton > button:hover {
-        background-color: #f0f0f0; /* Slightly darker background on hover */
-        color: black; /* Keep text black */
-    }
-    div.stButton > button:active {
-        background-color: #e0e0e0; /* Even darker background when active */
-        color: black; /* Keep text black */
-    }
+    background-color: #ffffff; /* White background */
+    color: #000000; /* Black text */
+    border: 2px solid #000000; /* Black border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 8px 16px; /* Padding inside the button */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    cursor: pointer; /* Pointer cursor */
+}
+
+div.stButton > button:hover {
+    background-color: #f0f0f0; /* Slightly darker white for hover effect */
+    color: #000000; /* Keep text black */
+    border-color: #000000; /* Keep border black */
+}
+
+div.stButton > button:active {
+    background-color: #e0e0e0; /* Even darker white when active */
+    color: #000000; /* Keep text black */
+    border-color: #000000; /* Keep border black */
+}
+
+
     div[data-testid="stStatusWidget"] div button {
         display: none;
     }
@@ -91,6 +97,10 @@ QUESTION: {question}
 ANSWER:
 </s>[INST]
 """
+
+
+
+
 
 prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question", "chat_history"])
 
