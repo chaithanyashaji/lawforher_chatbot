@@ -1,5 +1,5 @@
 venv/
-db/
+.env
 *.pyc
 __pycache__/
 .idea/
